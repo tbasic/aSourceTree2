@@ -1,0 +1,50 @@
+autowired를 활용한 방법으로 mvc로 구현하고
+aop를 적용하려는데 before와 after around를 동시에 사용하려하면 에러가 나서
+service파일을 controller에서 autowired를 사용하는데서 문제가 발생
+
+autowired aop but was actually of type 'com.sun.proxy.$Proxy117' 로 구글에서 검색
+https://lingi04.github.io/experiences/2-Autowired%EC%99%80_AOP.html 를 참조해서
+확인해보려는데 해결안됨 그래서 생성자를 통해 주입하는 방법으로 변경해서 해결 하려함
+------------------------
+위는 autowired방법
+위방법은 모두주석해제했을때 처음 실행부터 오류나지만
+생성자를 활용한 방법은 실행시 오류는 없지만 두개중 하나만 출력됨
+실행되는 내용이 하나의 일단위임???
+
+controller의 around가 적용되면 service의 before는 출력안됨
+
+
+log4j셋팅
+
+영상 : https://www.youtube.com/watch?v=hfmSIrBlHHI 참조
+자바웹을 다루는 기술
+
+log4j를 활용하여 log파일을 logoutput.log파일로 로그 저장
+----------------
+pom에 추가
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-tx</artifactId>
+    <version>4.3.8.RELEASE</version>
+</dependency>
+
+https://gngsn.tistory.com/152  참조 스프링 3.1 기준 일부내용부족
+
+https://dymn.tistory.com/49  참조 두싸이트 참조 스프링 부트기준 내용에서 일부참조
+
+root-context.xml , servlet-context.xml파일중 mybatis설정된 부분에 추가 수정
+
+	@Transactional
+	@Override
+	public void execute(Model model) {
+		System.out.println(">>>BReplyService");
+		......
+		dao.replyShape(bgroup, bstep);
+		dao.reply(bid,bname,btitle,bcontent,
+				bgroup,bstep,bindent);	
+	}
+
+BReplyService내용중 나중에 실행되는 reply메소드의 쿼리 칼럼이름을 변경해서
+강제 오류를 일으키고 replyShape가 롤백이 되는지 확인
+	
